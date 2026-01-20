@@ -19,30 +19,87 @@ Sofia Gomes, 20240848  <br>
 
 ## <center>*ABCDEats Inc*</center>
 
-In this project, you will act as consultants for ABCDEats Inc. (ABCDE), a fictional food delivery service partner- ing with a range of restaurants to offer diverse meal options. Your task is to analyse customer data collected over three months from three cities to help ABCDE develop a data-driven strategy tailored to various customer segments. The description of the data is provided under the Dataset Description section of this document. <br>
+Customer segmentation project for **ABCDEats Inc.** (fictional food delivery platform).  
+Built an end-to-end pipeline to **clean, engineer, transform and cluster** customer data, producing **6 interpretable segments** and an **interactive interface** for exploring cluster insights and assigning new customers to clusters.
 
-We recommend segmenting customers using multiple perspectives. Examples of segmentation perspec- tives include value-based segmentation, which groups customers by their economic value; preference or behaviour-based segmentation which focuses on purchasing habits; and demographic segmentation which categorises customers by attributes like age, gender, and income to understand different interaction pat- terns. <br>
+## Key highlights
+- Dataset with **52 numerical** and **4 categorical** variables (~**31,098** customers).
+- Robust preprocessing: missing values, inconsistencies, and outlier handling.
+- **+10 engineered features** capturing customer behavior (spending patterns, loyalty, preferences, time-based habits).
+- Clustering benchmark: **Hierarchical (Ward)** vs **K-Means**; final decision favors **6 clusters** for richer segmentation.
+- **Perspective-based clustering** (grouping features by viewpoint) and a final combined model.
+- Interactive interface to:
+  - inspect a single cluster (boxplot/heatmap/cohesion),
+  - compare clusters (radar, feature-difference bars, distance plots, overlap),
+  - explore all clusters (multiple plots, incl. 3D),
+  - add a new customer and assign it to a cluster.
 
-Ultimately, the company seeks a final segmentation that integrates these perspectives to enable them to develop a comprehensive marketing strategy.
+## Problem statement
+Segment customers into meaningful groups to support **targeted marketing**, personalization, and better business decisions.
 
-### Parte I
-Expected Outcomes:
-* Conduct an in-depth exploration of the dataset. Summarise key statistics for the data, and discuss their possible implications.
-* Identifyanytrends,patterns,oranomalieswithin the dataset. Explore relationships between fea- tures.
-* Create new features that may help enhance your analysis.
-* Use visualisations to effectively communicate your findings. 
+## Data
+- **Customers:** ~31k
+- **Features:** 52 numerical + 4 categorical  
+- Typical issues addressed:
+  - missing values (e.g., `last promo`, `customer age`, `customer region`, `first order`),
+  - inconsistent rows (e.g., customers with no orders),
+  - extreme outliers (e.g., unrealistic counts).
 
-### Parte II
-Expected Outcomes:
-* Preprocess the data. Invest time into evaluat- ing your preprocessing pipeline, explaining the choices you made and the advantages and disad- vantages of different decisions.
-* Justify the clustering approach. Determine and provide a rationale for the clustering solution, in- cluding the number of clusters, that you decide to use.
-* Explain the clusters in your final segmentation. Analyse and describe the characteristics of each group, taking into account the perspectives you used. Create profiles that highlight the distin- guishing features of each cluster.
-* Suggest business applications. Based on your in- sights, define general marketing approaches for each cluster.
+> Note: the dataset was provided in an academic context and may not be included in this repository.
 
+## Methodology
 
-### Libraries
+### 1) Data exploration & quality checks
+- Column types validation (e.g., casting certain fields to integer).
+- Duplicate removal (very low duplication rate).
+- Missingness analysis (including correlation of missing values).
+- Distribution inspection for numerical/categorical variables.
 
-#### Save libraries
-pip freeze > requirements.txt
-#### Install libraries
-pip install requirements.txt
+### 2) Cleaning & imputation
+- Inconsistencies fixed (e.g., logical constraints between vendor/product counts).
+- Missing values:
+  - Numerical: median and **KNN imputation** (for specific fields)
+  - Categorical: mode
+- Outliers: combined **automatic + manual** strategy to avoid removing too much data.
+
+### 3) Feature engineering (+10 new features)
+Created features to capture customer behavior and value, e.g.:
+- spending aggregates,
+- average spend per order/product,
+- loyalty and chain preference,
+- cuisine variety,
+- preferred ordering day / time window.
+
+### 4) Transformation & scaling
+- Frequency encoding for some categorical variables (e.g., promo/payment).
+- One-hot encoding for remaining categorical variables (not used for clustering features).
+- Log transformation for numerical variables.
+- Scaling:
+  - Min-Max scaling to [0,1]
+  - adjusted standardization for groups of features with incompatible scales.
+
+### 5) Clustering & model selection
+- **Hierarchical clustering** (Ward linkage) explored with 4–6 clusters; selected **6** for interpretability and actionable segmentation.
+- **K-Means** suggested fewer clusters (best at 4), but final choice remained Hierarchical (6 clusters) for more nuanced profiles.
+- Perspective-based clustering: separate clustering from different feature “views” (e.g., preferences, purchase behavior, age/time) and combined into a final segmentation.
+
+## Final segments (6 clusters)
+High-level interpretation of the final clusters:
+- **Cluster 0:** Regular customers, higher spending
+- **Cluster 1:** Largest group of regular customers
+- **Cluster 2:** Frequent orders, low loyalty (variety-seeking)
+- **Cluster 3:** High frequency, small orders
+- **Cluster 4:** Best spending / most valuable customers
+- **Cluster 5:** Least spending customers (needs activation)
+
+## Interactive interface
+The interface supports:
+- **Insights in one cluster** (boxplot, heatmap, cohesion)
+- **Compare clusters** (radar, difference bars, distances, distribution overlap)
+- **Insights into all clusters** (multiple plots incl. interactive 3D)
+- **Connect new entry to cluster**
+  - “Quick prediction”: assigns based on centroid distance (fast)
+  - “Calculate cluster”: recomputes clustering with the new point (more accurate, slower)
+
+## Repository structure 
+
