@@ -47,6 +47,21 @@ Segment customers into meaningful groups to support **targeted marketing**, pers
 
 > Note: the dataset was provided in an academic context and may not be included in this repository.
 
+## Repository contents
+This repository is notebook-driven. The recommended execution order is:
+
+1. `01_Explore_Data.ipynb` — initial exploration and data understanding  
+2. `02_Processing_Data.ipynb` — cleaning (missing values, inconsistencies, outliers)  
+3. `03_Feature_Engineering.ipynb` — creation of new features (+10)  
+4. `04_Visualizations.ipynb` — exploratory and cluster-related plots  
+5. `05_Data_transformation.ipynb` — encoding, transformations, scaling  
+6. `06_Clustering.ipynb` — model training/benchmarking and final clustering  
+7. `07_Interface.ipynb` — interactive interface for insights + new customer assignment  
+
+Additional files:
+- `New_Features.ipynb` — feature engineering notes/experiments
+- `utils.py` — shared helper functions used across notebooks
+
 ## Methodology
 
 ### 1) Data exploration & quality checks
@@ -101,5 +116,4 @@ The interface supports:
   - “Quick prediction”: assigns based on centroid distance (fast)
   - “Calculate cluster”: recomputes clustering with the new point (more accurate, slower)
 
-## Repository structure 
 
